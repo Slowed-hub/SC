@@ -1,0 +1,123 @@
+</script><!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simplified 3D Card Hover Animation with Swapped Red and Blue Badges</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #1a2a44;
+            perspective: 1000px;
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
+        }
+
+        .card {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            background: #0a1a2a;
+            border-radius: 50%;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.1s ease;
+            transform-style: preserve-3d;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(255, 255, 255, 0.5),
+                transparent
+            );
+            transition: transform 0.5s ease;
+            transform: translateX(-100%) rotate(45deg);
+            pointer-events: none;
+        }
+
+        .card:hover::before {
+            transform: translateX(100%) rotate(45deg);
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 1;
+            padding: 0;
+            text-align: center;
+            color: #fff;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .badge {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-content">
+                <img src="https://i.postimg.cc/W4xsxXqx/flair-patch-fw25-invictus-1-a-diff.png" alt="Badge 1" class="badge" onerror="this.src='https://via.placeholder.com/300x300.png?text=Badge+Image+Error'">
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-content">
+                <img src="https://i.postimg.cc/bYxqF0yF/flair-patch-fw25-aquilo-1-a-diff.png" alt="Badge 2" class="badge" onerror="this.src='https://via.placeholder.com/300x300.png?text=Badge+Image+Error'">
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-content">
+                <img src="https://i.postimg.cc/3rkHysZ4/flair-patch-fw25-saleno-1-a-diff.png" alt="Badge 3" class="badge" onerror="this.src='https://via.placeholder.com/300x300.png?text=Badge+Image+Error'">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                const rotateX = (y - centerY) / 5;
+                const rotateY = (centerX - x) / 5;
+
+                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'rotateX(0) rotateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>
